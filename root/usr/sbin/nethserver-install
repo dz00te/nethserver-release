@@ -65,9 +65,12 @@ function end {
     echo "    Password: <your_root_password>"
     echo
     echo
-    echo "Installation log can be found here: /var/log/nethserver-install.log"
-    echo
-    echo
+    echo "Installation logs can be found:"
+
+    echo "/var/log/nethserver-install.log"
+    echo "/var/log/nethserver-install-journalctl.log"
+	echo
+	echo
     log "End"
     exit 0
 }
@@ -80,27 +83,45 @@ if [ $? -eq 0 ]; then
    end
 fi
 
-modules=""
-if [ $# -gt 0 ]; then
-   echo "The following extra modules will also be installed: $@"
-   log "Extra modules: $@"
-   for m in $@
-   do
-       modules="$modules @$m"
-   done
+/sbin/nethserver-arm-preconf
+if [[ $? -ne 0 ]]; then
+   exit 0
 fi
 
 
 log "Starting installation"
 echo "Starting installation process. It will take a while..."
 echo
-echo "Installing base system${modules:+ and }$modules..."
+logexec "yum -y --disablerepo=* --enablerepo=extras,base,updates install deltarpm"
+#simlink for missing epel.repo
+if [ ! -f /etc/yum.repos.d/epel.repo ]; then
+   ln -s /etc/yum.repos.d/NethServer.ns-epel /etc/yum.repos.d/epel.repo
+fi
+##logexec "rpm --import /etc/pki/rpm-gpg/*"
+logexec "yum -y --disablerepo=* --enablerepo=nethserver-base,nethserver-updates,base,updates,epel,extras install @nethserver-arm"
+
+rpm -q nethserver-base >/dev/null
+if [[ $? -ne 0 ]]; then
+   log "Can not install base system; stopping nethserver-install"
+   echo
+   echo "Something went wrong installing base system"
+   exit $?
+else
+  logexec "systemctl stop firewalld"
+  logexec "systemctl disable firewalld"
+fi
+
+touch /var/spool/first-boot
 echo
-logexec "yum -y install epel-release deltarpm"
-logexec "rpm --import /etc/pki/rpm-gpg/*"
-logexec "yum install @nethserver-iso $modules -y"
+echo "Configuring system, please wait...     (this can take over 5 minutes)"
 echo
-echo "Configuring system, please wait..."
+###logexec "systemctl start nethserver-system-init.service"
+
+if [[ $? -eq 0 ]]; then 
+     log "yum group mark-remove core"
+     yum group mark-remove core > /dev/null 2>&1
+fi
+
 echo
 for UNIT in NetworkManager firewalld; do
     if systemctl is-active -q $UNIT; then
@@ -109,4 +130,7 @@ for UNIT in NetworkManager firewalld; do
     fi
 done
 logexec "/sbin/e-smith/signal-event system-init"
+
+# devel-debug : write journalctl to log
+journalctl -x > /var/log/nethserver-install-journalctl.log
 end

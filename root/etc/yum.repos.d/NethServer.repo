@@ -1,27 +1,36 @@
 #
-# nethserver.org YUM repositories configuration
+# nethserver-arm YUM repositories configuration
 #
 
 [nethserver-base]
-name=NethServer-$releasever - Base
-mirrorlist=http://mirrorlist.nethserver.org/?release=$releasever&repo=base&arch=$basearch
-#baseurl=http://mirror.nethserver.org/nethserver/$releasever/base/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-NethServer-$releasever
+name=NethServer $basearch - base 
+baseurl=http://mirror.framassa.org/nethserver-arm/$releasever/base/$basearch
+gpgcheck=0
 enabled=1
 enablegroups=0
 
 [nethserver-updates]
-name=NethServer-$releasever - Updates
-mirrorlist=http://mirrorlist.nethserver.org/?release=$releasever&repo=updates&arch=$basearch
-#baseurl=http://mirror.nethserver.org/nethserver/$releasever/updates/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-NethServer-$releasever
+name=NethServer $basearch - updates
+baseurl=http://mirror.framassa.org/nethserver-arm/$releasever/updates/$basearch
+gpgcheck=0
 enabled=1
 enablegroups=1
 
 [nethserver-testing]
-name=NethServer-$releasever - Testing
-mirrorlist=http://mirrorlist.nethserver.org/?release=$releasever&repo=testing&arch=$basearch
-#baseurl=http://mirror.nethserver.org/nethserver/$releasever/testing/$basearch/
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-NethServer-$releasever
+name=NethServer $basearch - testing
+baseurl=http://mirror.framassa.org/nethserver-arm/$releasever/testing/$basearch
+gpgcheck=0
 enabled=0
 enablegroups=0
+
+[nethserver-builddep]
+name=NethServer $basearch - builddep
+baseurl=http://mirror.framassa.org/nethserver-arm/$releasever/builddep/$basearch
+enabled=0
+gpgcheck=0
+
+
+
+
+
+

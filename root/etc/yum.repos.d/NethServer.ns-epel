@@ -1,0 +1,7 @@
+[epel]
+#Temporary placeholder for missing epel repositories
+name=NethServer $basearch - epel placeholder
+baseurl=http://mirror.framassa.org/nethserver-arm/$releasever/ns-epel/$basearch
+gpgcheck=0
+enabled=1
+enablegroups=0
