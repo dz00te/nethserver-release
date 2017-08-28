@@ -29,8 +29,8 @@ baseurl=http://mirror.framassa.org/nethserver7-arm/$releasever/builddep/$basearc
 enabled=0
 gpgcheck=0
 
-
-
-
-
-
+[nethserver-crt]
+name=NethServer $basearch - ContinuousReleaseTest
+baseurl=http://mirror.framassa.org/nethserver7-arm/$releasever/ns-crt/$basearch
+enabled=0
+gpgcheck=0
