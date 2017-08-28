@@ -31,6 +31,6 @@ gpgcheck=0
 
 [nethserver-crt]
 name=NethServer $basearch - ContinuousReleaseTest
-baseurl=http://mirror.framassa.org/nethserver7-arm/$releasever/ns-crt/$basearch
+baseurl=http://mirror.framassa.org/nethserver7-arm/$releasever/ns-crt/
 enabled=0
 gpgcheck=0
