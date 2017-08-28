@@ -93,10 +93,21 @@ log "Starting installation"
 echo "Starting installation process. It will take a while..."
 echo
 logexec "yum -y --disablerepo=* --enablerepo=extras,base,updates install deltarpm"
+
 #simlink for missing epel.repo
-if [ ! -f /etc/yum.repos.d/epel.repo ]; then
-   ln -s /etc/yum.repos.d/NethServer.ns-epel /etc/yum.repos.d/epel.repo
+#if [ ! -f /etc/yum.repos.d/epel.repo ]; then
+#   ln -s /etc/yum.repos.d/NethServer.ns-epel /etc/yum.repos.d/epel.repo
+#fi
+
+#symlink for missing epel.repo on armv7l - official epel repo for aarch64
+arch=$(hostnamectl status | grep Architecture |  awk '{print $2}')
+if [ ! -f /etc/yum.repos.d/epel.repo ] && [ "$arch" == "arm" ]; then
+   ln -s /etc/yum.repos.d/NethServer.ns-epel /etc/yum.repos.d/epel.repo;
+elif [ ! -f /etc/yum.repos.d/epel.repo ] && [ "$arch" == "arm64" ]; then
+    logexec "yum -y --disablerepo=* --enablerepo=extras,base,updates install epel-release"
 fi
+
+
 ##logexec "rpm --import /etc/pki/rpm-gpg/*"
 logexec "yum -y --disablerepo=* --enablerepo=nethserver-base,nethserver-updates,base,updates,epel,extras install @nethserver-arm"
 
@@ -129,6 +140,9 @@ for UNIT in NetworkManager firewalld; do
         logexec "systemctl preset $UNIT"
     fi
 done
+#scaleway fix
+logexec "systemctl unmask network"
+
 logexec "/sbin/e-smith/signal-event system-init"
 
 # devel-debug : write journalctl to log
