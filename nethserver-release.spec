@@ -3,8 +3,8 @@
 
 Summary: NethServer YUM repo configuration
 Name: nethserver-release
-Version: 7arm
-Release: 3%{?dist}
+Version: 7
+Release: 3arm%{?dist}
 License: GPL
 BuildArch: noarch
 Source: %{name}-%{version}.tar.gz
