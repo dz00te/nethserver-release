@@ -65,7 +65,7 @@ function end {
     echo "    Password: <your_root_password>"
     echo
     echo
-    echo "Installation logs can be found:"
+    echo "Installation logs can be found here:"
 
     echo "/var/log/nethserver-install.log"
     echo "/var/log/nethserver-install-journalctl.log"

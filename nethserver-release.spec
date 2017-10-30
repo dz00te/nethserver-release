@@ -1,10 +1,10 @@
-%define distroversion 7.3.1611
+%define distroversion 7.4.1708
 %define distrorelease Final
 
 Summary: NethServer YUM repo configuration
 Name: nethserver-release
 Version: 7
-Release: 3arm%{?dist}
+Release: 5arm%{?dist}
 License: GPL
 BuildArch: noarch
 Source: %{name}-%{version}.tar.gz
@@ -37,6 +37,12 @@ rm -rf %{buildroot}
 %dir %{_nseventsdir}/%{name}-update
 
 %changelog
+* Fri Oct 27 2017 Davide Principi <davide.principi@nethesis.it> - 7-5
+- Fix version lock
+
+* Mon Oct 23 2017 Davide Principi <davide.principi@nethesis.it> - 7-4
+- Rebase on CentOS 7.4.1708
+
 * Wed Mar 01 2017 Davide Principi <davide.principi@nethesis.it> - 7-3
 - nethserver-install: Unit NetworkManager.service not loaded - Bug NethServer/dev#5226
 
@@ -63,6 +69,3 @@ rm -rf %{buildroot}
 
 * Thu Jul 07 2016 Giacomo Sanchietti <giacomo.sanchietti@nethesis.it> - 7-0.2
 - NethServer 7 beta1 release
-
-
-
