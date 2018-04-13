@@ -1,7 +1,6 @@
 [epel]
 #Temporary placeholder for missing epel repositories
-name=NethServer $basearch - epel placeholder
-baseurl=http://mirror.framassa.org/nethserver7-arm/$releasever/ns-epel/$basearch
-gpgcheck=0
+name=Epel rebuild for armhfp
+baseurl=https://armv7.dev.centos.org/repodir/epel-pass-1/
 enabled=1
-enablegroups=0
+gpgcheck=0
